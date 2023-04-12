@@ -35,3 +35,8 @@ D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\obj\Debug\net6.0-windows\refin
 D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\obj\Debug\net6.0-windows\Kroshka Adventure.pdb
 D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\obj\Debug\net6.0-windows\Kroshka Adventure.genruntimeconfig.cache
 D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\obj\Debug\net6.0-windows\ref\Kroshka Adventure.dll
+D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\bin\Debug\net6.0-windows\Content\background.xnb
+D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\bin\Debug\net6.0-windows\Content\testmodel.xnb
+D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\bin\Debug\net6.0-windows\Content\SplashFont.xnb
+D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\bin\Debug\net6.0-windows\Content\sand.xnb
+D:\GitHub_ulearnGame\ulearnGame\Kroshka Adventure\bin\Debug\net6.0-windows\Content\wind.xnb

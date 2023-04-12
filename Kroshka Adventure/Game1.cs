@@ -1,22 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Kroshka_Adventure
 {
+    enum Stat
+    {
+        SplashScreen,
+        Game,
+        Final,
+        Pause
+    }
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
-        // Позволяет получить доступ к графическому устройству компьютера,
-        // смартфона, планшета, игровой консоли
-        // Объект GraphicsDeviceManager является проводником между игрой и
-        // видеокартой, и вся отрисовка в игре будет проходить через этот объект.
         SpriteBatch spriteBatch;
-        // служит для отрисовки спрайтов - изображений, которые используются в игре.
+        Stat Stat = Stat.SplashScreen;
 
-
-        // В конструкторе класса Game1 и методе Initialize происходит начальная
-        // инициализации используемых переменных и объектов.
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -26,39 +27,56 @@ namespace Kroshka_Adventure
 
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1020;
+            graphics.IsFullScreen = false;
+            graphics.ApplyChanges();
             base.Initialize();
         }
-
-        // предназначен для загрузки ресурсов, которые применяются в игре -
-        // аудиофайлов, файлов изображений и так далее.
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            SplashScreen.Background = Content.Load<Texture2D>("background");
+            SplashScreen.Font = Content.Load<SpriteFont>("SplashFont");
+            Asteroids.Init(spriteBatch, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            Wind.Texture2D = Content.Load<Texture2D>("wind");
         }
 
-        // Методы Update() и Draw() представляют игровой цикл.
-        // Оба метода принимают в качестве параметра объект GameTime - он
-        // хранит время, прошедшее с начала игры.
-
-        // Метод Update() отвечает за логику игры, производит вычисления: обновляет
-        // позиции персонажей и так далее. По умолчанию все его действие сводится к
-        // проверке нажатой пользователем клавиши:
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            switch(Stat)
+            {
+                case Stat.SplashScreen:
+                    SplashScreen.Update();
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space)) Stat = Stat.Game;
+                    break;
+                case Stat.Game:
+                    Asteroids.Update();
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Stat = Stat.SplashScreen;
+                    break;
+            }
 
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                //Exit();
+            SplashScreen.Update();
             base.Update(gameTime);
         }
 
-        // Метод Draw() выполняет перерисовку экрана. Например, в методе Update обновляется
-        // позиция персонажа, а в методе Draw() происходит перерисовка персонажа на основе
-        // новой позиции. При этом важно учитывать, что все вычисления должны находиться в
-        // методе Update. Задача метода Draw - только перерисовка.
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
+            spriteBatch.Begin();
+            switch(Stat)
+            {
+                case Stat.SplashScreen:
+                    SplashScreen.Draw(spriteBatch);
+                    break;
+                case Stat.Game:
+                    Asteroids.Draw();
+                    break;
+            }
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
