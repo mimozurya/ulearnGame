@@ -27,9 +27,9 @@ namespace Kroshka_Adventure
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1020;
-            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             base.Initialize();
         }
@@ -40,24 +40,28 @@ namespace Kroshka_Adventure
             SplashScreen.Font = Content.Load<SpriteFont>("SplashFont");
             Asteroids.Init(spriteBatch, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             Wind.Texture2D = Content.Load<Texture2D>("wind");
+            Character.Texture2D = Content.Load<Texture2D>("idle0");
         }
-
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState keyboardState = Keyboard.GetState();
             switch(Stat)
             {
                 case Stat.SplashScreen:
                     SplashScreen.Update();
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space)) Stat = Stat.Game;
+                    if (keyboardState.IsKeyDown(Keys.Space)) Stat = Stat.Game;
                     break;
                 case Stat.Game:
                     Asteroids.Update();
-                    if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Stat = Stat.SplashScreen;
+                    if (keyboardState.IsKeyDown(Keys.Escape)) Stat = Stat.SplashScreen;
+                    if (keyboardState.IsKeyDown(Keys.Up)) Asteroids.Character.Up();
+                    if (keyboardState.IsKeyDown(Keys.Left)) Asteroids.Character.Left();
+                    if (keyboardState.IsKeyDown(Keys.Right)) Asteroids.Character.Right();
+                    if (keyboardState.IsKeyDown(Keys.Down)) Asteroids.Character.Down();
                     break;
             }
-
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                //Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape))
+                Exit();
             SplashScreen.Update();
             base.Update(gameTime);
         }
@@ -65,7 +69,6 @@ namespace Kroshka_Adventure
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
             spriteBatch.Begin();
             switch(Stat)
             {
